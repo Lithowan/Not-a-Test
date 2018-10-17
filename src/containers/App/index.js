@@ -2,13 +2,14 @@ import { isNonEmptyString } from 'ramda-adjunct'
 import { connect } from 'react-redux'
 
 import App from '../../components/App'
-import { userRegistered } from '../../state/actions'
-import { getUsers, getLatestUser } from '../../state/selectors'
+import { userRegistered, sortingToggled } from '../../state/actions'
+import { getUsers, getLatestUser, isSorted } from '../../state/selectors'
 
 function mapStateToProps(state, props) {
   return {
     users: getUsers(state),
-    latestUser: getLatestUser(state)
+    latestUser: getLatestUser(state),
+    sorted: isSorted(state)
   }
 }
 
@@ -21,6 +22,15 @@ function mapDispatchToProps(dispatch, props) {
         dispatch(userRegistered(userInput.value))
         userInput.value = ''
       }
+    }
+  }
+}
+
+function mapSortingToggleToProps(dispatch, props) {
+  return {
+    handleSortingToggle: e => {
+      e.preventDefault()
+      dispatch(sortingToggled(!isSorted()))
     }
   }
 }
